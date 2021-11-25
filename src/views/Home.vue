@@ -4,7 +4,8 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
+import { getColors } from "../api/colors"
 import { ref, toRefs, reactive } from "vue"
 export default {
   name: 'Home',
@@ -12,7 +13,10 @@ export default {
 
   },
   setup() {
-
+    
   },
+  created(){
+    getColors()
+  }
 }
 </script>
