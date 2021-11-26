@@ -1,6 +1,6 @@
 <template>
   <div class="rgb-line">
-    <div class="line" v-for="c in rgb">
+    <div class="line" v-for="(c,index) in rgb" :key="index">
       <div class="line_dotted"></div>
       <div class="line_real" :style="{ height: offsetValue(c) }"></div>
     </div>
