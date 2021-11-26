@@ -10,7 +10,7 @@
         stroke-opacity='.3'
         stroke="#ccc"
         stroke-linejoin="round"
-        stroke-linecap="round"
+        stroke-linecap="square"
         fill="none"
       />
       <circle
@@ -22,7 +22,7 @@
         stroke-opacity='.7'
         stroke="#fff"
         stroke-linejoin="round"
-        stroke-linecap="round"
+        stroke-linecap="square"
         fill="none"
         stroke-dasharray="56.5"
         :stroke-dashoffset='offsetValue'

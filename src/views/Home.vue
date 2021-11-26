@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ColorCard from '../components/color-card'
+import ColorCard from '../components/ColorCard'
 import { getColors } from "../api/colors"
 import { ref, reactive, onBeforeMount} from "vue"
 export default {

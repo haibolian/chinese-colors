@@ -8,24 +8,28 @@
     </div>
 
     <div class="rgb-name">
-
+      <span v-text="color.hex.replace('#','').toUpperCase()"></span>
+      <rgb-line :rgb="color.RGB"></rgb-line>
+      <span v-text="color.pinyin.toUpperCase()"></span>
     </div>
   </div>
 </template>
 
 <script>
-import CmykCircle from './components/CmykCircle.vue'
+import CmykCircle from './CmykCircle.vue'
+import RgbLine from './RgbLine.vue'
 export default {
   name:'ColorsCard',
   components:{
-    CmykCircle
+    CmykCircle,
+    RgbLine
   },
   props:{
     color: {
       type: Object
     }
   },
-  setup(){
+  setup(props){
     
     return {
       
@@ -51,5 +55,15 @@ export default {
 .name-chinese {
   writing-mode:vertical-lr;
   letter-spacing: 4px;
+}
+.rgb-name {
+  height: 120px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  font-size: 0.8em;
+  span {
+    writing-mode: vertical-lr;    
+  }
 }
 </style>
