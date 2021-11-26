@@ -18,6 +18,7 @@
 <script>
 import ColorCard from '../components/ColorCard'
 import { getColors } from "../api/colors"
+import dataa from './data'
 import { ref, reactive, onBeforeMount} from "vue"
 export default {
   name: 'Home',
@@ -27,8 +28,8 @@ export default {
   setup(props) {
     // 获取数据
     const colorsList = ref([])
-    onBeforeMount(async ()=>{
-      let { data } = await getColors()
+    onBeforeMount(()=>{
+      let { data } = dataa
       colorsList.value = data
     })
 
