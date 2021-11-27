@@ -1,75 +1,162 @@
 <template>
-  <div class="chinese-colors" :style="{ backgroundColor: backgroundColor }">
+  <div class="chinese-colors" :style="{ backgroundColor: '#5a191b' }">
     <div class="colors-container">
       <color-card
         v-for="color in colorsList"
         :key="color.name"
-        :color="color" 
+        :color="color"
         @click="clickColorCard(color)"
       />
     </div>
 
     <div class="color-info">
-
+      <div class="color-info_value">
+        <template v-for="(cmyk,index) in currentColor.CMYK" :key="index">
+          <div class="color-info_cmyk">
+            <span>{{ cmykTag[index] }}</span>
+            <color-value :value='cmyk' :index='index'></color-value>
+          </div>
+        </template>
+        <template v-for="(rgb,index) in currentColor.RGB" :key="index">
+          <div class="color-info_rgb">
+            <span>{{ rgbTag[index] }}</span>
+            <div class="color-info_rgb__value">{{ rgb }}</div>
+          </div>
+        </template>
+      </div>
+      <div class="color-info_name">
+        <div class="color-info_name__chinese">{{ currentColor.name }}</div>
+        <div class="color-info_name__pinyin">{{ currentColor.pinyin && currentColor.pinyin.toUpperCase() }}</div>
+      </div>
+      <div class="logo">
+        <img src="../assets/images/logo.png" alt="">
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import ColorCard from '../components/ColorCard'
+import ColorValue from '../components/ColorValue'
 import { getColors } from "../api/colors"
 import dataa from './data'
 import { ref, reactive, onBeforeMount} from "vue"
 export default {
   name: 'Home',
   components: {
-    ColorCard
+    ColorCard,
+    ColorValue
   },
   setup(props) {
     // 获取数据
     const colorsList = ref([])
     onBeforeMount(()=>{
       let { data } = dataa
+      data = [].concat(data.splice(234)).concat(data)
       colorsList.value = data
     })
 
     // 设置背景色
-    let backgroundColor = ref('#ddd')
+    let currentColor = ref({
+      name: '中国色',
+      pinyin: 'zhongguose',
+      CMYK: [0,0,0,0],
+      RGB: [255,255,255],
+      hex: ''
+    })
     const clickColorCard = (color)=> {
-      backgroundColor.value = color.hex
+      currentColor.value = color
     }
 
-    
+    // cmyk value
+    const cmykTag = ref(['C','M','Y','K'])
+    const rgbTag = ref(['R','G','B'])
+
     return {
       colorsList,
-      backgroundColor,
-      clickColorCard
+      currentColor,
+      clickColorCard,
+      cmykTag,
+      rgbTag
     };
   },
+  
 }
 </script>
 
 <style lang="scss" scoped>
 .chinese-colors {
-  padding: 20px 0;
+  padding: 50px 0;
   background-image: url('../assets/images/texture.png');
   transition: background-color 1.5s;
   .colors-container {
     width: 50%;
     box-sizing: border-box;
     padding: 0 80px 0 270px;
-
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
   }
   .color-info {
     width: 50%;
-    height: 100%;
-    padding: 0 30px 0 10px;
-    background-color: red;
+    color: #fff;
+    height: calc(100vh);
     position: fixed;
-    right: 0;
+    left: 45%;
+    top: 50px;
+    display: flex;
+    justify-content: flex-start;
+    .color-info_value,
+    .color-info_name,
+    .logo {
+      width: 29%;
+      height: 100%;
+    }
+    .color-info_value {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .logo {
+      text-align: center;
+    }
+    .color-info_name__chinese {
+      font-size: 5em;
+      margin: 0 auto;
+      letter-spacing: .3em;
+      writing-mode: vertical-lr;
+    }
+    .color-info_name__pinyin {
+      text-align: center;
+    }
+
+    .color-info_cmyk,
+    .color-info_rgb {
+      width: 50px;
+      font-weight: 340;
+      padding: 6px 0 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, .6);
+      span {
+         font-size: 12px;
+      }
+    }
+    
+    .color-info_rgb {
+      height: 45px;
+      padding-bottom: 10px;
+      .color-info_rgb__value {
+        line-height: 25px;
+        font-size: 23px;
+        text-align: right;
+      }
+    }
+
+    .color-info_cmyk {
+      height: 70px;
+      &:first-child {
+        border-top: 1px solid rgba(255, 255, 255, .6);
+      }
+    }
   }
 }
 </style>
