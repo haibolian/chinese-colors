@@ -48,6 +48,10 @@ export default {
   border-top: 6px solid;
   padding-top: 10px;
   cursor: pointer;
+  &:hover {
+    opacity: .5;
+    transition: opacity .3s ease-in-out;
+  }
 }
 .cmyk-name {
   display: flex;

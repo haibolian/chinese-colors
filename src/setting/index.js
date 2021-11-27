@@ -1,0 +1,1 @@
+export const title = '中国色 - 中国传统颜色'

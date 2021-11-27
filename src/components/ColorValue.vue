@@ -80,6 +80,6 @@ export default {
 .circle_real {
   transform: rotate(-90deg);
   transform-origin: center center;
-  transition: stroke-dashoffset 2s;
+  transition: stroke-dashoffset 1s;
 }
 </style>

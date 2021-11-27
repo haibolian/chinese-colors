@@ -1,5 +1,5 @@
 <template>
-  <div class="chinese-colors" :style="{ backgroundColor: '#5a191b' }">
+  <div class="chinese-colors" :style="{ backgroundColor: currentColor.hex }">
     <div class="colors-container">
       <color-card
         v-for="color in colorsList"
@@ -20,7 +20,7 @@
         <template v-for="(rgb,index) in currentColor.RGB" :key="index">
           <div class="color-info_rgb">
             <span>{{ rgbTag[index] }}</span>
-            <div class="color-info_rgb__value">{{ rgb }}</div>
+            <div class="color-info_rgb__value">{{ getValue(index) }}</div>
           </div>
         </template>
       </div>
@@ -36,51 +36,84 @@
 </template>
 
 <script>
+import gsap from 'gsap'
 import ColorCard from '../components/ColorCard'
 import ColorValue from '../components/ColorValue'
 import { getColors } from "../api/colors"
-import dataa from './data'
-import { ref, reactive, onBeforeMount} from "vue"
+import colorData from './data'
+import { title } from "../setting/index"
+import { ref, reactive, onBeforeMount, getCurrentInstance} from "vue"
+import { useRoute } from "vue-router"
 export default {
   name: 'Home',
   components: {
     ColorCard,
     ColorValue
   },
+  data(){
+    return {
+      r: 0,
+      g: 0,
+      b: 0
+    }
+  },
+  computed: {
+    getValue(){
+      return (index)=>{
+        const arr = [this.r, this.g, this.b]
+        return arr[index].toFixed(0)
+      }
+    }
+  },
   setup(props) {
-    // 获取数据
-    const colorsList = ref([])
-    onBeforeMount(()=>{
-      let { data } = dataa
-      data = [].concat(data.splice(234)).concat(data)
-      colorsList.value = data
-    })
-
-    // 设置背景色
+    // init
     let currentColor = ref({
       name: '中国色',
       pinyin: 'zhongguose',
       CMYK: [0,0,0,0],
       RGB: [255,255,255],
-      hex: ''
+      hex: '#126e82'
     })
-    const clickColorCard = (color)=> {
-      currentColor.value = color
-    }
-
     // cmyk value
     const cmykTag = ref(['C','M','Y','K'])
     const rgbTag = ref(['R','G','B'])
 
+    // 获取数据
+    const colorsList = ref([])
+    
+    function setColorByHash() {
+      const route = useRoute()
+      const pinyin = route.hash.replace('#','')
+      const color = colorsList.value.find(c=> c.pinyin === pinyin)
+      if(color) {
+        currentColor.value = color
+        document.title = `${color.name + ' - ' + title }`
+      }
+    }
+
+    onBeforeMount(()=>{
+      let { data } = colorData
+      data = [].concat(data.splice(234)).concat(data)
+      colorsList.value = data
+      setColorByHash()
+    })
+    
+
+
     return {
       colorsList,
       currentColor,
-      clickColorCard,
       cmykTag,
-      rgbTag
+      rgbTag,
     };
   },
-  
+  methods: {
+    clickColorCard(color){
+      this.currentColor = color
+      document.title = `${color.name + ' - ' + title }`
+      gsap.to(this, { duration: 1, r: color.RGB[0], g: color.RGB[1], b: color.RGB[2]})
+    }
+  }
 }
 </script>
 
@@ -121,7 +154,8 @@ export default {
       text-align: center;
     }
     .color-info_name__chinese {
-      font-size: 5em;
+      font-family: FZLS, cursive;
+      font-size: 7em;
       margin: 0 auto;
       letter-spacing: .3em;
       writing-mode: vertical-lr;
