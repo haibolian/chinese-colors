@@ -1,5 +1,5 @@
 <template>
-  <div class="color-card" :style="{ borderTopColor: color.hex }">
+  <a :href="'#' + color.pinyin" class="color-card" :style="{ borderTopColor: color.hex }">
     <div class="cmyk-name">
       <div class="cmyk-container">
         <cmyk-circle v-for="(value,index) in color.CMYK" :key="index" :value="value" />
@@ -12,7 +12,7 @@
       <rgb-line :rgb="color.RGB"></rgb-line>
       <span v-text="color.pinyin.toUpperCase()"></span>
     </div>
-  </div>
+  </a>
 </template>
 
 <script>
@@ -41,6 +41,7 @@ export default {
 
 <style lang='scss' scoped>
 .color-card {
+  text-decoration: none;
   margin: 6px;
   width: 50px;
   color: #fff;
