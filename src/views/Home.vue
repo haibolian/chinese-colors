@@ -96,6 +96,7 @@ export default {
       data = [].concat(data.splice(234)).concat(data)
       colorsList.value = data
       setColorByHash()
+      console.log('此项目仿自 http://zhongguose.com');
     })
     
 
