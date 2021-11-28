@@ -127,7 +127,7 @@ export default {
     box-sizing: border-box;
     padding: 0 80px 0 270px;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-start;
     flex-wrap: wrap;
   }
   .color-info {
