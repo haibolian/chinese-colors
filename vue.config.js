@@ -1,4 +1,7 @@
+const path = require('path')
+
 module.exports = {
+  outputDir: __dirname + '/docs',
   chainWebpack(config){
     config.plugin('html').tap(args => {
       args[0].title = '中国色 - 中国传统颜色'
