@@ -1,0 +1,18 @@
+name: 'build and deploy'
+on: [push]
+jobs:
+  build and deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        use: actions/checkout@master
+      
+      - name: build and deploy
+        use: JamesIves/github-pages-deploy-action@master 
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} # 使用刚新建的secret
+          BRANCH: github-pages # 存放产物的分支名称
+          FOLDER: dist # 存放build后产物的目录
+          BUILD_SCRIPT: npm install && npm run build # 执行的命令
+      
+      
