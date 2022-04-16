@@ -1,5 +1,5 @@
 const path = require('path')
-
+ 
 module.exports = {
   publicPath: '/chinese-colors/',
   homepage: "https://haibolian.github.io/chinese-colors",
