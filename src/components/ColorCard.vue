@@ -1,5 +1,5 @@
 <template>
-  <a :href="'#' + color.pinyin" class="color-card" :style="{ borderTopColor: color.hex }">
+  <a class="color-card" :style="{ borderTopColor: color.hex }">
     <div class="cmyk-name">
       <div class="cmyk-container">
         <cmyk-circle v-for="(value,index) in color.CMYK" :key="index" :value="value" />

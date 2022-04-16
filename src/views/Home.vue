@@ -43,29 +43,17 @@ import { getColors } from "../api/colors"
 import colorData from './data'
 import { title } from "../setting/index"
 import { ref, reactive, onBeforeMount, getCurrentInstance} from "vue"
-import { useRoute } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 export default {
   name: 'Home',
   components: {
     ColorCard,
     ColorValue
   },
-  data(){
-    return {
-      r: 0,
-      g: 0,
-      b: 0
-    }
-  },
-  computed: {
-    getValue(){
-      return (index)=>{
-        const arr = [this.r, this.g, this.b]
-        return arr[index].toFixed(0)
-      }
-    }
-  },
   setup(props) {
+    const r = ref(0)
+    const g = ref(0)
+    const b = ref(0)
     // init
     let currentColor = ref({
       name: '中国色',
@@ -83,7 +71,7 @@ export default {
     
     function setColorByHash() {
       const route = useRoute()
-      const pinyin = route.hash.replace('#','')
+      const pinyin = route.params.color
       const color = colorsList.value.find(c=> c.pinyin === pinyin)
       if(color) {
         currentColor.value = color
@@ -99,22 +87,31 @@ export default {
       console.log('此项目仿自 http://zhongguose.com');
     })
     
+    const getValue = function(index){
+      const arr = [r.value, g.value, b.value]
+      return arr[index].toFixed(0)
+    }
 
+    const instance = getCurrentInstance().proxy
+
+    const router = useRouter()
+    function clickColorCard(color){
+      router.push(`/${color.pinyin}`)
+      currentColor.value = color
+      document.title = `${color.name + ' - ' + title }`
+      gsap.to(instance, { duration: 1, r: color.RGB[0], g: color.RGB[1], b: color.RGB[2]})
+    }
 
     return {
+      r,g,b,
+      getValue,
+      clickColorCard,
       colorsList,
       currentColor,
       cmykTag,
       rgbTag,
     };
   },
-  methods: {
-    clickColorCard(color){
-      this.currentColor = color
-      document.title = `${color.name + ' - ' + title }`
-      gsap.to(this, { duration: 1, r: color.RGB[0], g: color.RGB[1], b: color.RGB[2]})
-    }
-  }
 }
 </script>
 
