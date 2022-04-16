@@ -12,10 +12,14 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
       
+      - name: install node
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
       - name: Install and Build 🔧
-        run: |
-          npm ci
-          npm run build
+        run: npm install
+        run: npm run build
         
       - name: deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.3.0
